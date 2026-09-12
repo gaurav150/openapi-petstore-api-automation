@@ -1,8 +1,6 @@
 package org.openapitools.client;
 
-import org.jetbrains.annotations.NotNull;
 import org.openapitools.client.api.PetApi;
-import org.openapitools.client.model.Category;
 import org.openapitools.client.model.Pet;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -10,6 +8,8 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.openapitools.client.utils.TestUtils.getPet;
 
 
 public class PetApiFunctionalTest {
@@ -139,6 +139,50 @@ public class PetApiFunctionalTest {
         }
     }
 
+    @Test(
+            description = "Verify adding a new pet with valid details",
+            dataProvider = "petTestData",
+            dataProviderClass = TestDataProvider.class
+    )
+    public void addNewPetValidDetailsTest(PetTestData testData) {
+
+        try {
+
+            Pet pet = getPet(
+                    testData.getCategoryName(),
+                    testData.getId(),
+                    testData.getName(),
+                    Pet.StatusEnum.fromValue(testData.getStatus()),
+                    testData.getPhotoUrls()
+            );
+
+            // Send POST Request
+            Pet response = petAPi.addPet(pet);
+
+            // Validate response
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+            // Validate Name
+            Assert.assertEquals(
+                    response.getName(),
+                    testData.getName(),
+                    "Pet name should match"
+            );
+
+            // Validate Status
+            Assert.assertEquals(
+                    response.getStatus(),
+                    Pet.StatusEnum.fromValue(testData.getStatus()),
+                    "Pet status should match"
+            );
+
+        } catch (Exception e) {
+            Assert.fail("API call failed: " + e.getMessage());
+        }
+    }
     // Negative test cases
     @Test(description = "Verify adding a pet with missing required fields")
     public void addPetMissingDetailsTest() {
@@ -266,27 +310,5 @@ public class PetApiFunctionalTest {
                     "Unexpected exception occurred: " + e.getMessage()
             );
         }
-    }
-
-    @NotNull
-    private static Category getCategory(String petCategoryName, Long petId) {
-        // Create category
-        Category category = new Category();
-        category.setName(petCategoryName);
-        category.setId(petId);
-        return category;
-    }
-
-    @NotNull
-    private static Pet getPet(String petCategoryName, Long petId, String petName, Pet.StatusEnum statusEnum, List<String> photoUrls) {
-        // Create category
-        Category category = getCategory(petCategoryName, petId);
-        // Creating pet Data
-        Pet pet = new Pet();
-        pet.setName(petName);
-        pet.setCategory(category);
-        pet.setStatus(statusEnum);
-        pet.setPhotoUrls(photoUrls);
-        return pet;
     }
 }

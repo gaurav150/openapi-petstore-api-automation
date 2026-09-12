@@ -1,0 +1,95 @@
+[
+  {
+    "id": 1223,
+    "categoryName": "German Shepherd",
+    "name": "Lucy",
+    "status": "available",
+    "photoUrls": [
+      "http://example.com",
+      "http://goodExample.com"
+    ]
+  },
+  {
+    "id": 1224,
+    "categoryName": "Labrador",
+    "name": "Max",
+    "status": "pending",
+    "photoUrls": [
+      "http://example.com/max"
+    ]
+  },
+  {
+    "id": 1225,
+    "categoryName": "Golden Retriever",
+    "name": "Buddy",
+    "status": "available",
+    "photoUrls": [
+      "http://example.com/buddy"
+    ]
+  },
+  {
+    "id": 1226,
+    "categoryName": "Beagle",
+    "name": "Charlie",
+    "status": "sold",
+    "photoUrls": [
+      "http://example.com/charlie",
+      "http://example.com/charlie2"
+    ]
+  },
+  {
+    "id": 1227,
+    "categoryName": "Bulldog",
+    "name": "Rocky",
+    "status": "available",
+    "photoUrls": [
+      "http://example.com/rocky"
+    ]
+  },
+  {
+    "id": 1228,
+    "categoryName": "Poodle",
+    "name": "Daisy",
+    "status": "pending",
+    "photoUrls": [
+      "http://example.com/daisy"
+    ]
+  },
+  {
+    "id": 1229,
+    "categoryName": "Rottweiler",
+    "name": "Bruno",
+    "status": "available",
+    "photoUrls": [
+      "http://example.com/bruno",
+      "http://example.com/bruno2"
+    ]
+  },
+  {
+    "id": 1230,
+    "categoryName": "Husky",
+    "name": "Luna",
+    "status": "sold",
+    "photoUrls": [
+      "http://example.com/luna"
+    ]
+  },
+  {
+    "id": 1231,
+    "categoryName": "Boxer",
+    "name": "Cooper",
+    "status": "available",
+    "photoUrls": [
+      "http://example.com/cooper"
+    ]
+  },
+  {
+    "id": 1232,
+    "categoryName": "Dachshund",
+    "name": "Milo",
+    "status": "pending",
+    "photoUrls": [
+      "http://example.com/milo"
+    ]
+  }
+]
