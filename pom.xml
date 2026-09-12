@@ -80,7 +80,7 @@
                     </systemPropertyVariables>
                     <argLine>-Xms512m -Xmx1500m</argLine>
                     <parallel>methods</parallel>
-                    <threadCount>10</threadCount>
+                    <threadCount>1</threadCount>
                 </configuration>
                 <dependencies>
                     <!--Custom provider and engine for Junit 5 to surefire-->

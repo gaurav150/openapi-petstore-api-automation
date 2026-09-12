@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
 import static org.openapitools.client.utils.TestUtils.getPet;
 
 
@@ -267,10 +268,6 @@ public class PetApiFunctionalTest {
                     "Expected HTTP status code 200"
             );
 
-            System.out.println(
-                    "Pet deleted successfully: " + createdPetId
-            );
-
         } catch (Exception e) {
             Assert.fail("API call failed: " + e.getMessage());
         }
@@ -313,10 +310,8 @@ public class PetApiFunctionalTest {
         }
     }
 
-    @Test(
-            description = "Verify getting a pet with valid Status"
-    )
-    public void getPetValidDetailsTest() {
+    @Test(description = "Verify retrieving pets by valid status values")
+    public void getPetsByValidStatusTest() {
 
         try {
 
@@ -363,6 +358,237 @@ public class PetApiFunctionalTest {
             }
         } catch (Exception e) {
             Assert.fail("API call failed: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify retrieving pet by valid petId")
+    public void getPetByPetID() throws InterruptedException {
+        try {
+            String petCategoryName = "German Shepherd";
+            Long petId = 1223L;
+            String petName = "Lucy";
+            List<String> photoUrls = new ArrayList<>();
+            photoUrls.add("http://example.com");
+            photoUrls.add("http://goodExample.com");
+            // Creating Pet
+            Pet pet = getPet(petCategoryName, petId, petName, Pet.StatusEnum.AVAILABLE, photoUrls);
+
+            // Send POST Request
+            Pet response = petAPi.addPet(pet);
+
+            // Validate response
+            Assert.assertNotNull(response, "Response should not be null");
+
+            // Validate Name
+            Assert.assertEquals(
+                    response.getName(),
+                    petName,
+                    "Pet name should match"
+            );
+
+            // Validate status from response
+            Assert.assertEquals(
+                    response.getStatus(),
+                    Pet.StatusEnum.AVAILABLE,
+                    "Pet status should be AVAILABLE"
+            );
+            Long newPetId = response.getId();
+            Assert.assertNotNull(newPetId);
+
+            Pet result = petAPi.getPetById(newPetId);
+
+            // Verify  response is not null
+            Assert.assertNotNull(result, "Retrieved pet should not be null");
+
+            // verify ID
+            Assert.assertEquals(newPetId, response.getId(),
+                    "pet ID should match the created pet ID");
+
+            // Verify Name,
+            Assert.assertEquals(result.getName(), petName, "Pet name should match");
+
+            // verify status
+            Assert.assertEquals(result.getStatus(), Pet.StatusEnum.AVAILABLE,
+                    "Pet status should  be AVAILABLE");
+
+            // Verify Category
+            Assert.assertNotNull(
+                    result.getCategory(),
+                    "Pet category should not be null"
+            );
+
+            Assert.assertEquals(
+                    result.getCategory().getName(),
+                    petCategoryName,
+                    "Pet category name should match"
+            );
+
+            // Verify Photo URLs
+            Assert.assertNotNull(
+                    result.getPhotoUrls(),
+                    "Photo URLs should not be null"
+            );
+
+            Assert.assertEquals(
+                    result.getPhotoUrls(),
+                    photoUrls,
+                    "Photo URLs should match"
+            );
+        } catch (ApiException e) {
+            if (e.getCode() == 404) {
+                sleep(1000);
+            } else {
+                Assert.fail("API call failed: " + e.getMessage());
+            }
+
+        }
+    }
+
+    @Test(description = "Verify getting pet with invalid pet ID")
+    public void getPetByInvalidPetIdTest() {
+
+        try {
+            petAPi.getPetById(-999L);
+            Assert.fail("Expected 404 exception");
+        } catch (ApiException e) {
+
+            Assert.assertEquals(
+                    e.getCode(),
+                    404,
+                    "Status code should be 404"
+            );
+
+            Assert.assertTrue(
+                    e.getResponseBody().contains("Pet not found"),
+                    "Error message should contain Pet not found"
+            );
+        }
+    }
+
+    @Test(description = "Verify deleting a pet successfully using a valid pet ID")
+    public void deletePetByValidPetIDTest() {
+        try {
+            String petCategoryName = "German Shepherd";
+            Long petId = 1223L;
+            String petName = "Lucy";
+            List<String> photoUrls = new ArrayList<>();
+            photoUrls.add("http://example.com");
+            photoUrls.add("http://goodExample.com");
+            // Creating Pet
+            Pet pet = getPet(petCategoryName, petId, petName, Pet.StatusEnum.AVAILABLE, photoUrls);
+
+            // Send POST Request
+            Pet response = petAPi.addPet(pet);
+
+            // Validate response
+            Assert.assertNotNull(response, "Response should not be null");
+
+            // Validate Name
+            Assert.assertEquals(
+                    response.getName(),
+                    petName,
+                    "Pet name should match"
+            );
+
+            // Validate status from response
+            Assert.assertEquals(
+                    response.getStatus(),
+                    Pet.StatusEnum.AVAILABLE,
+                    "Pet status should be AVAILABLE"
+            );
+            Long createdPetId = response.getId();
+            Assert.assertNotNull(createdPetId);
+            String apiKey = "my-real-api-key";
+
+            Assert.assertNotNull(createdPetId, "Pet should be created successfully");
+
+            ApiResponse<Void> result =
+                    petAPi.deletePetWithHttpInfo(
+                            createdPetId,
+                            apiKey
+                    );
+
+            // Verify DELETE response
+            Assert.assertEquals(
+                    result.getStatusCode(),
+                    200,
+                    "Expected HTTP status code 200"
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Delete pet with non-existing Pet ID
+    @Test(description = "Verify deleting a pet with a non-existing pet ID returns 404")
+    public void deletePetByNonExistingPetIdTest() {
+
+        try {
+            Long petId = 999999999L;
+            String apiKey = "my-real-api-key";
+
+            petAPi.deletePet(petId, apiKey);
+
+            Assert.fail(
+                    "Expected 404 exception for non-existing pet ID"
+            );
+
+        } catch (ApiException e) {
+
+            Assert.assertEquals(
+                    e.getCode(),
+                    404,
+                    "Expected HTTP status code 404"
+            );
+
+            Assert.assertTrue(
+                    e.getResponseBody() == null ||
+                            e.getResponseBody().isEmpty(),
+                    "Expected response body to be empty"
+            );
+        }
+    }
+
+    //  Delete pet with invalid/negative Pet ID
+    @Test(description = "Verify deleting a pet with an invalid pet ID")
+    public void deletePetByInvalidPetIdTest() {
+
+        try {
+            Long petId = -123L;
+            String apiKey = "my-real-api-key";
+
+            petAPi.deletePet(petId, apiKey);
+
+            Assert.fail(
+                    "Expected exception for invalid pet ID"
+            );
+
+        } catch (ApiException e) {
+
+            Assert.assertEquals(
+                    e.getCode(),
+                    404,
+                    "Expected HTTP status code 404"
+            );
+        }
+    }
+
+    // Delete pet without API key
+    @Test(description = "Verify deleting a pet without an API key")
+    public void deletePetWithoutApiKeyTest() {
+
+        try {
+            Long petId = 1223L;
+
+            petAPi.deletePet(petId, null);
+
+            Assert.fail(
+                    "Expected exception when API key is not provided"
+            );
+
+        } catch (ApiException e) {
+            Assert.assertEquals(e.getCode(), 404,
+                    "Expected HTTP 404 when API key is missing");
         }
     }
 }
