@@ -66,10 +66,10 @@ import org.openapitools.client.auth.OAuthFlow;
  */
 public class ApiClient {
 
-    protected String basePath = "http://petstore.swagger.io/v2";
+    protected String basePath = "https://petstore.swagger.io/v2";
     protected List<ServerConfiguration> servers = new ArrayList<ServerConfiguration>(Arrays.asList(
     new ServerConfiguration(
-      "http://petstore.swagger.io/v2",
+      "https://petstore.swagger.io/v2",
       "No description provided",
       new HashMap<String, ServerVariable>()
     )
@@ -233,7 +233,7 @@ public class ApiClient {
     /**
      * Set base path
      *
-     * @param basePath Base path of the URL (e.g http://petstore.swagger.io/v2)
+     * @param basePath Base path of the URL (e.g https://petstore.swagger.io/v2)
      * @return An instance of ApiClient
      */
     public ApiClient setBasePath(String basePath) {

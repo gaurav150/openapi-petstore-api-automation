@@ -2,7 +2,7 @@
 
 Swagger PetStore Demo
 - API version: 1.0.0
-  - Build date: 2026-09-12T19:44:48.523333+05:30[Asia/Kolkata]
+  - Build date: 2026-09-12T22:54:09.224684+05:30[Asia/Kolkata]
   - Generator version: 7.25.0
 
 A sample API for managing pets, orders, and users.
@@ -91,7 +91,7 @@ import org.openapitools.client.api.PetApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://petstore.swagger.io/v2");
+    defaultClient.setBasePath("https://petstore.swagger.io/v2");
     
     // Configure OAuth2 access token for authorization: petstore_auth
     OAuth petstore_auth = (OAuth) defaultClient.getAuthentication("petstore_auth");
@@ -116,7 +116,7 @@ public class Example {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://petstore.swagger.io/v2*
+All URIs are relative to *https://petstore.swagger.io/v2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
