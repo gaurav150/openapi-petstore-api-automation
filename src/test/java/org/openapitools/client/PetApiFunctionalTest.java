@@ -46,7 +46,7 @@ public class PetApiFunctionalTest {
             // Validate Name
             Assert.assertEquals(
                     response.getName(),
-                    "Lucy",
+                    petName,
                     "Pet name should match"
             );
 
@@ -55,6 +55,82 @@ public class PetApiFunctionalTest {
                     response.getStatus(),
                     Pet.StatusEnum.AVAILABLE,
                     "Pet status should be AVAILABLE"
+            );
+
+
+        } catch (Exception e) {
+            Assert.fail("API call failed: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify adding a new pet with valid details and Status as Pending")
+    public void addNewPetValidDetailsStatusAsPendingTest() {
+        try {
+            String petCategoryName = "German Shepherd";
+            Long petId = 1223L;
+            String petName = "Bauer";
+            List<String> photoUrls = new ArrayList<>();
+            photoUrls.add("http://example.com");
+            photoUrls.add("http://goodExample.com");
+            // Creating Pet
+            Pet pet = getPet(petCategoryName, petId, petName, Pet.StatusEnum.PENDING, photoUrls);
+
+            // Send POST Request
+            Pet response = petAPi.addPet(pet);
+
+            // Validate response
+            Assert.assertNotNull(response, "Response should not be null");
+
+            // Validate Name
+            Assert.assertEquals(
+                    response.getName(),
+                    petName,
+                    "Pet name should match"
+            );
+
+            // Validate status from response
+            Assert.assertEquals(
+                    response.getStatus(),
+                    Pet.StatusEnum.PENDING,
+                    "Pet status should be Pending"
+            );
+
+
+        } catch (Exception e) {
+            Assert.fail("API call failed: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify adding a new pet with valid details and Status as Sold")
+    public void addNewPetValidDetailsStatusAsPSoldTest() {
+        try {
+            String petCategoryName = "German Shepherd";
+            Long petId = 1223L;
+            String petName = "Bauer";
+            List<String> photoUrls = new ArrayList<>();
+            photoUrls.add("http://example.com");
+            photoUrls.add("http://goodExample.com");
+            // Creating Pet
+            Pet pet = getPet(petCategoryName, petId, petName, Pet.StatusEnum.SOLD, photoUrls);
+
+            // Send POST Request
+            Pet response = petAPi.addPet(pet);
+
+            // Validate response
+            Assert.assertNotNull(response, "Response should not be null");
+
+            // Validate Name
+            Assert.assertEquals(
+                    response.getName(),
+                    petName,
+                    "Pet name should match"
+            );
+
+            // Validate status from response
+            Assert.assertEquals(
+                    response.getStatus(),
+                    Pet.StatusEnum.SOLD,
+                    "Pet status should be Sold"
             );
 
 
