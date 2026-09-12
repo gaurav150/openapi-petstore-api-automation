@@ -310,54 +310,95 @@ public class PetApiFunctionalTest {
         }
     }
 
-    @Test(description = "Verify retrieving pets by valid status values")
-    public void getPetsByValidStatusTest() {
+    @Test(
+            description = "Verify adding a pet and retrieving pets by valid status",
+            dataProvider = "petTestData",
+            dataProviderClass = TestDataProvider.class
+    )
+    public void getPetsByStatusTest(PetTestData testData) {
 
         try {
 
-            List<String> status = new ArrayList<>();
-            status.add("available");
-            status.add("pending");
-            List<Pet> response = petAPi.findPetsByStatus(status);
+            System.out.println("========================================");
+            System.out.println("Starting test: getPetsByStatusTest");
+            System.out.println("Test Data:");
+            System.out.println("Pet ID       : " + testData.getId());
+            System.out.println("Pet Name     : " + testData.getName());
+            System.out.println("Category     : " + testData.getCategoryName());
+            System.out.println("Status       : " + testData.getStatus());
+            System.out.println("========================================");
+
+            // Create Pet object from JSON test data
+            Pet pet = getPet(
+                    testData.getCategoryName(),
+                    testData.getId(),
+                    testData.getName(),
+                    Pet.StatusEnum.fromValue(testData.getStatus()),
+                    testData.getPhotoUrls()
+            );
+
+            // Send POST Request
+            Pet addResponse = petAPi.addPet(pet);
 
             // Verify response is not null
             Assert.assertNotNull(
-                    response,
-                    "Response should not be null"
+                    addResponse,
+                    "Add pet response should not be null"
+            );
+
+            // Verify created pet name
+            Assert.assertEquals(
+                    addResponse.getName(),
+                    testData.getName(),
+                    "Pet name should match"
+            );
+
+            // Verify created pet status
+            Assert.assertEquals(
+                    addResponse.getStatus(),
+                    Pet.StatusEnum.fromValue(testData.getStatus()),
+                    "Pet status should match"
+            );
+
+            // Retrieve pets using valid status values
+            List<String> status = new ArrayList<>();
+            status.add("available");
+            status.add("pending");
+
+            List<Pet> getResponse =
+                    petAPi.findPetsByStatus(status);
+
+            // Verify GET response is not null
+            Assert.assertNotNull(
+                    getResponse,
+                    "Get pets response should not be null"
             );
 
             // Verify response contains pets
             Assert.assertFalse(
-                    response.isEmpty(),
-                    "Response should contain at least one pet"
+                    getResponse.isEmpty(),
+                    "Get pets response should contain at least one pet"
             );
 
-            // Verify each pet in the response
-            for (Pet pet : response) {
+            // Verify returned pets have one of the requested statuses
+            for (Pet returnedPet : getResponse) {
 
                 Assert.assertNotNull(
-                        pet.getId(),
-                        "Pet ID should not be null"
-                );
-
-                Assert.assertNotNull(
-                        pet.getName(),
-                        "Pet name should not be null"
-                );
-
-                Assert.assertNotNull(
-                        pet.getStatus(),
+                        returnedPet.getStatus(),
                         "Pet status should not be null"
                 );
 
-                // Verify returned status is one of the requested statuses
                 Assert.assertTrue(
-                        status.contains(pet.getStatus().getValue()),
-                        "Pet status should be either available or pending"
+                        status.contains(returnedPet.getStatus().getValue()),
+                        "Returned pet status should be either available or pending"
                 );
             }
+
         } catch (Exception e) {
-            Assert.fail("API call failed: " + e.getMessage());
+
+            Assert.fail(
+                    "API call failed: " + e.getMessage()
+            );
         }
     }
 
