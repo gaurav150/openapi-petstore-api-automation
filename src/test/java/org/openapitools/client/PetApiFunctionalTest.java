@@ -183,6 +183,7 @@ public class PetApiFunctionalTest {
             Assert.fail("API call failed: " + e.getMessage());
         }
     }
+
     // Negative test cases
     @Test(description = "Verify adding a pet with missing required fields")
     public void addPetMissingDetailsTest() {
@@ -309,6 +310,59 @@ public class PetApiFunctionalTest {
             Assert.fail(
                     "Unexpected exception occurred: " + e.getMessage()
             );
+        }
+    }
+
+    @Test(
+            description = "Verify getting a pet with valid Status"
+    )
+    public void getPetValidDetailsTest() {
+
+        try {
+
+            List<String> status = new ArrayList<>();
+            status.add("available");
+            status.add("pending");
+            List<Pet> response = petAPi.findPetsByStatus(status);
+
+            // Verify response is not null
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+            // Verify response contains pets
+            Assert.assertFalse(
+                    response.isEmpty(),
+                    "Response should contain at least one pet"
+            );
+
+            // Verify each pet in the response
+            for (Pet pet : response) {
+
+                Assert.assertNotNull(
+                        pet.getId(),
+                        "Pet ID should not be null"
+                );
+
+                Assert.assertNotNull(
+                        pet.getName(),
+                        "Pet name should not be null"
+                );
+
+                Assert.assertNotNull(
+                        pet.getStatus(),
+                        "Pet status should not be null"
+                );
+
+                // Verify returned status is one of the requested statuses
+                Assert.assertTrue(
+                        status.contains(pet.getStatus().getValue()),
+                        "Pet status should be either available or pending"
+                );
+            }
+        } catch (Exception e) {
+            Assert.fail("API call failed: " + e.getMessage());
         }
     }
 }
