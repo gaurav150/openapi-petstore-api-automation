@@ -222,7 +222,7 @@ public class PetApiFunctionalTest {
 
     // Positive test cases
     @Test(description = "Verify deleting an existing pet with a valid pet ID")
-    public void deleteExistingPetValidPet() {
+    public void deleteExistingPetValidPetTest() {
 
         try {
             String petCategoryName = "German Shepherd";
@@ -276,7 +276,7 @@ public class PetApiFunctionalTest {
 
     // Negative test cases
     @Test(description = "Verify deleting a pet with an invalid pet ID")
-    public void deleteInvalidPet() {
+    public void deleteInvalidPetTest() {
         try {
             Long petId = 1224L;
             String apiKey = "my-real-api-key";
@@ -405,7 +405,7 @@ public class PetApiFunctionalTest {
     }
 
     @Test(description = "Verify retrieving pet by valid petId")
-    public void getPetByPetID() throws InterruptedException {
+    public void getPetByPetIDTest() throws InterruptedException {
         try {
             String petCategoryName = "German Shepherd";
             Long petId = 1223L;

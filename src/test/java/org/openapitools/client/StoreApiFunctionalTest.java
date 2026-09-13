@@ -178,7 +178,7 @@ public class StoreApiFunctionalTest {
 
     // Create Store Order ID
     @Test(description = "Verify Store order added successfully")
-    public void postCreateStoreOrder() {
+    public void postCreateStoreOrderTest() {
         try {
             OffsetDateTime shipDate = OffsetDateTime.now();
             Long petId = 1223L;
@@ -231,7 +231,7 @@ public class StoreApiFunctionalTest {
     @Test(description = "Verify Store orders added successfully",
             dataProvider = "orderTestData",
             dataProviderClass = TestDataProvider.class)
-    public void postCreateStoreOrders(OrderTestData testData) {
+    public void postCreateStoreOrdersTest(OrderTestData testData) {
         try {
             System.out.println("========================================");
             System.out.println("Starting test: postCreateStoreOrders");
@@ -322,7 +322,7 @@ public class StoreApiFunctionalTest {
     @Test(description = "Verify Store orders deleted successfully",
             dataProvider = "orderTestData",
             dataProviderClass = TestDataProvider.class)
-    public void deleteStoreOrders(OrderTestData testData) {
+    public void deleteStoreOrdersTest(OrderTestData testData) {
         try {
             System.out.println("========================================");
             System.out.println("Starting test: deleteCreatedStoreOrders");
@@ -412,13 +412,73 @@ public class StoreApiFunctionalTest {
             Assert.assertEquals(deletedResponse.getStatusCode(), 200,
                     "Order deleted Successfully with status code ");
 
-            System.out.println("deleted order in store "+response);
-
         } catch (ApiException e) {
             System.err.println("Exception when calling StoreApi#deleteOrder");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
+        }
+    }
+
+    // Deleted invalid orderID
+    @Test(description = "Verify getting order with invalid order ID")
+    public void deleteOrderByInvalidOrderIdTest() {
+        try {
+            storeApi.deleteOrder(-999L);
+            Assert.fail("Expected 404 exception");
+        } catch (ApiException e) {
+
+            // Validating Error Code
+            Assert.assertEquals(e.getCode(), 404, "Status Code should be 404");
+
+            // Validating Response body message
+            Assert.assertTrue(e.getResponseBody().contains("Order Not Found"),
+                    "Error message should contain Order Not Found");
+        }
+    }
+
+    // Deleted order with non-existing Order-ID
+    @Test(description = "Verifying deleting a order with a non-existing order ID returns 404")
+    public void deleteOrderByNonExistingOrderIdTest() {
+        try {
+            Long orderId = 9999999999999L;
+            storeApi.deleteOrder(orderId);
+
+            Assert.fail("Expected 404 exception for non-existing Order ID");
+        } catch (ApiException e) {
+
+            Assert.assertEquals(
+                    e.getCode(),
+                    404,
+                    "Expected HTTP status code 404"
+            );
+
+            Assert.assertTrue(
+                    e.getResponseBody().contains("Order Not Found"),
+                    "Expected response body to be Order Not Found"
+            );
+        }
+    }
+
+    //  Delete pet with invalid/negative Pet ID
+    @Test(description = "Verify deleting a pet with an invalid order ID")
+    public void deletePetByInvalidOrderIdTest() {
+        try{
+            Long orderID = -123L;
+            storeApi.deleteOrder(orderID);
+
+            Assert.fail("Expected 404 exception for Invalid Order ID");
+        } catch (ApiException e) {
+            Assert.assertEquals(
+                    e.getCode(),
+                    404,
+                    "Expected HTTP status code 404"
+            );
+
+            Assert.assertTrue(
+                    e.getResponseBody().contains("Order Not Found"),
+                    "Expected response body to be Order Not Found"
+            );
         }
     }
 }
