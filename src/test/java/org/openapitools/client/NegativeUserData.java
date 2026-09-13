@@ -3,8 +3,8 @@ package org.openapitools.client;
 import lombok.Data;
 
 @Data
-public class UserTestData {
-
+public class NegativeUserData {
+    private String testCase;
     private Long id;
     private String username;
     private String firstName;

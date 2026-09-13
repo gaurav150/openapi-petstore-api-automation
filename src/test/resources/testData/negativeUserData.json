@@ -1,0 +1,79 @@
+[
+  {
+    "testCase": "Null User Object",
+    "id": 101,
+    "username": "rohit101",
+    "firstName": "Rohit",
+    "lastName": "Kumar",
+    "email": "rohit101@example.com",
+    "password": "password123",
+    "phone": "9876543210",
+    "userStatus": 1
+  },
+  {
+    "testCase": "Invalid Email",
+    "id": 102,
+    "username": "rohit102",
+    "firstName": "Rohit",
+    "lastName": "Kumar",
+    "email": "invalid-email",
+    "password": "password123",
+    "phone": "9876543210",
+    "userStatus": 1
+  },
+  {
+    "testCase": "Empty Username",
+    "id": 103,
+    "username": "",
+    "firstName": "Rohit",
+    "lastName": "Kumar",
+    "email": "rohit103@example.com",
+    "password": "password123",
+    "phone": "9876543210",
+    "userStatus": 1
+  },
+  {
+    "testCase": "Very Long Username",
+    "id": 104,
+    "username": "rohit_very_long_username_test_data_123456789012345678901234567890",
+    "firstName": "Rohit",
+    "lastName": "Kumar",
+    "email": "rohit104@example.com",
+    "password": "password123",
+    "phone": "9876543210",
+    "userStatus": 1
+  },
+  {
+    "testCase": "Null Username",
+    "id": 105,
+    "username": null,
+    "firstName": "Rohit",
+    "lastName": "Kumar",
+    "email": "rohit105@example.com",
+    "password": "password123",
+    "phone": "9876543210",
+    "userStatus": 1
+  },
+  {
+    "testCase": "Null Email",
+    "id": 106,
+    "username": "rohit106",
+    "firstName": "Rohit",
+    "lastName": "Kumar",
+    "email": null,
+    "password": "password123",
+    "phone": "9876543210",
+    "userStatus": 1
+  },
+  {
+    "testCase": "Null Password",
+    "id": 107,
+    "username": "rohit107",
+    "firstName": "Rohit",
+    "lastName": "Kumar",
+    "email": "rohit107@example.com",
+    "password": null,
+    "phone": "9876543210",
+    "userStatus": 1
+  }
+]

@@ -104,4 +104,34 @@ public class TestDataProvider {
             );
         }
     }
+
+    @DataProvider(name = "negativeUserTestData")
+    public Object[][] negativeUserTestData() {
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            InputStream inputStream = getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("testData/negativeUserData.json");
+
+            NegativeUserData[] users = objectMapper.readValue(
+                    inputStream,
+                    NegativeUserData[].class
+            );
+            Object[][] data = new Object[users.length][1];
+
+            for (int i = 0; i < users.length; i++) {
+                data[i][0] = users[i];
+            }
+
+            return data;
+
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Failed to load pet test data from negativeUserData.json",
+                    e
+            );
+        }
+    }
 }
