@@ -1,9 +1,11 @@
 package org.openapitools.client.utils;
 
 import org.openapitools.client.model.Category;
+import org.openapitools.client.model.Order;
 import org.openapitools.client.model.Pet;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public class TestUtils {
@@ -40,5 +42,25 @@ public class TestUtils {
         pet.setPhotoUrls(photoUrls);
 
         return pet;
+    }
+
+    public static Order getOrder(
+            Long orderId,
+            Long petId,
+            Integer quantity,
+            OffsetDateTime shipDate,
+            Order.StatusEnum status,
+            Boolean complete) {
+
+        Order order = new Order();
+
+        order.setId(orderId);
+        order.setPetId(petId);
+        order.setQuantity(quantity);
+        order.setShipDate(shipDate);
+        order.setStatus(status);
+        order.setComplete(complete);
+
+        return order;
     }
 }
