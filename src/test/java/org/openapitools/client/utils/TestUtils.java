@@ -4,6 +4,7 @@ import org.openapitools.client.model.Category;
 import org.openapitools.client.model.Order;
 import org.openapitools.client.model.Pet;
 import org.jetbrains.annotations.NotNull;
+import org.openapitools.client.model.User;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -62,5 +63,27 @@ public class TestUtils {
         order.setComplete(complete);
 
         return order;
+    }
+
+    public static User getUser(
+            Long id,
+            String firstName,
+            String lastName,
+            String phone,
+            String email,
+            String userName,
+            String password,
+            int userStatus
+    ){
+        User user = new User();
+        user.setId(id);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPhone(phone);
+        user.setEmail(email);
+        user.setUserStatus(userStatus);
+        user.setPassword(password);
+        user.setUsername(userName);
+        return user;
     }
 }

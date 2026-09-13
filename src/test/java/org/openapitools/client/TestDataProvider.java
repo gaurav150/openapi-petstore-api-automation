@@ -74,4 +74,34 @@ public class TestDataProvider {
             );
         }
     }
+
+    @DataProvider(name = "userTestData")
+    public Object[][] userTestData() {
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            InputStream inputStream = getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("testData/userData.json");
+
+            UserTestData[] users = objectMapper.readValue(
+                    inputStream,
+                    UserTestData[].class
+            );
+            Object[][] data = new Object[users.length][1];
+
+            for (int i = 0; i < users.length; i++) {
+                data[i][0] = users[i];
+            }
+
+            return data;
+
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Failed to load pet test data from userData.json",
+                    e
+            );
+        }
+    }
 }

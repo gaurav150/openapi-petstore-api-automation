@@ -1,0 +1,62 @@
+[
+  {
+    "id": 23,
+    "firstName": "Rohit",
+    "lastName": "Kumar",
+    "phone": "1234567890",
+    "email": "abcn@example.com",
+    "userStatus": 1,
+    "password": "qwerty",
+    "username": "rohitK"
+  },
+  {
+    "id": 24,
+    "firstName": "Amit",
+    "lastName": "Sharma",
+    "phone": "9876543210",
+    "email": "amit.sharma@example.com",
+    "userStatus": 1,
+    "password": "Amit@123",
+    "username": "amitS"
+  },
+  {
+    "id": 25,
+    "firstName": "Priya",
+    "lastName": "Patel",
+    "phone": "9123456780",
+    "email": "priya.patel@example.com",
+    "userStatus": 1,
+    "password": "Priya@123",
+    "username": "priyaP"
+  },
+  {
+    "id": 26,
+    "firstName": "Vikram",
+    "lastName": "Singh",
+    "phone": "9988776655",
+    "email": "vikram.singh@example.com",
+    "userStatus": 0,
+    "password": "Vikram@123",
+    "username": "vikramS"
+  },
+  {
+    "id": 27,
+    "firstName": "Neha",
+    "lastName": "Verma",
+    "phone": "9012345678",
+    "email": "neha.verma@example.com",
+    "userStatus": 1,
+    "password": "Neha@123",
+    "username": "nehaV"
+  },
+  {
+    "id": 28,
+    "firstName": "Arjun",
+    "lastName": "Mehta",
+    "phone": "9345678120",
+    "email": "arjun.mehta@example.com",
+    "userStatus": 1,
+    "password": "Arjun@123",
+    "username": "arjunM"
+  }
+]
