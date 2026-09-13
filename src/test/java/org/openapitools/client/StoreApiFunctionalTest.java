@@ -318,4 +318,107 @@ public class StoreApiFunctionalTest {
             );
         }
     }
+
+    @Test(description = "Verify Store orders deleted successfully",
+            dataProvider = "orderTestData",
+            dataProviderClass = TestDataProvider.class)
+    public void deleteStoreOrders(OrderTestData testData) {
+        try {
+            System.out.println("========================================");
+            System.out.println("Starting test: deleteCreatedStoreOrders");
+            System.out.println("Test Data:");
+            System.out.println("Order ID     : " + testData.getId());
+            System.out.println("Pet ID       : " + testData.getPetId());
+            System.out.println("Quantity     : " + testData.getQuantity());
+            System.out.println("Ship Date    : " + testData.getShipDate());
+            System.out.println("Status       : " + testData.getStatus());
+            System.out.println("Complete     : " + testData.getComplete());
+            System.out.println("========================================");
+
+            Order order = getOrder(
+                    testData.getId(),
+                    testData.getPetId(),
+                    testData.getQuantity(),
+                    testData.getShipDate(),
+                    Order.StatusEnum.fromValue(testData.getStatus()),
+                    testData.getComplete()
+            );
+            Order response = storeApi.placeOrder(order);
+
+            // Validate response
+            Assert.assertNotNull(response, "Response should not be null");
+
+            // Validate Order ID
+            Assert.assertEquals(
+                    response.getId(),
+                    order.getId(),
+                    "Order ID should match"
+            );
+
+            // Validate Pet ID
+            Assert.assertEquals(
+                    response.getPetId(),
+                    order.getPetId(),
+                    "Pet ID should match"
+            );
+
+            // Validate Quantity
+            Assert.assertEquals(
+                    response.getQuantity(),
+                    order.getQuantity(),
+                    "Order quantity should match"
+            );
+
+            // Validate Ship Date is not null in request
+            Assert.assertNotNull(
+                    order.getShipDate(),
+                    "Order request ship date should not be null"
+            );
+
+            // Validate Ship Date is not null in response
+            Assert.assertNotNull(
+                    response.getShipDate(),
+                    "Order response ship date should not be null"
+            );
+
+            // Validate Ship Date
+            // Compare Instant because API may return a different timezone offset
+            Assert.assertEquals(
+                    response.getShipDate().toInstant(),
+                    order.getShipDate().toInstant(),
+                    "Order ship date should match"
+            );
+
+            // Validate Status
+            Assert.assertEquals(
+                    response.getStatus(),
+                    order.getStatus(),
+                    "Order status should match"
+            );
+
+            // Validate Complete flag
+            Assert.assertEquals(
+                    response.getComplete(),
+                    order.getComplete(),
+                    "Order complete status should match"
+            );
+            Long orderId = testData.getId();
+            ApiResponse<Void> deletedResponse = storeApi.deleteOrderWithHttpInfo(orderId);
+
+            // Validate responses should not be null
+            Assert.assertNotNull(deletedResponse, "response should not be null");
+
+            // Validate Status code
+            Assert.assertEquals(deletedResponse.getStatusCode(), 200,
+                    "Order deleted Successfully with status code ");
+
+            System.out.println("deleted order in store "+response);
+
+        } catch (ApiException e) {
+            System.err.println("Exception when calling StoreApi#deleteOrder");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+        }
+    }
 }
